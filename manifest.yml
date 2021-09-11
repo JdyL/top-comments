@@ -1,0 +1,11 @@
+modules:
+  macro:
+    - key: top-comments-hello-world
+      function: main
+      title: Top Comments Tool
+      description: Pins the comment with the most likes
+  function:
+    - key: main
+      handler: index.run
+app:
+  id: ari:cloud:ecosystem::app/ecd254f4-ddd3-4fda-9bc1-4423207bce05
