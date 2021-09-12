@@ -8,13 +8,14 @@ import ForgeUI, {
   useState,
   Heading,
   Code,
+  Link,
 } from "@forge/ui";
 
 const fetchCommentsForContent = async (contentId) => {
   const res = await api
     .asUser()
     .requestConfluence(
-      route`/rest/api/content/${contentId}/child/comment?expand=body.atlas_doc_format,metadata.likes`
+      route`/rest/api/content/${contentId}/child/comment?expand=body.atlas_doc_format,metadata.likes,metadata,container`
     );
 
   const data = await res.json();
@@ -26,14 +27,20 @@ const App = () => {
   const [comments] = useState(
     async () => await fetchCommentsForContent(context.contentId)
   );
+  const getLatestMostLikedComment = true;
+
+  // console.log(comments[0].container);
 
   const getMostLikedComment = () => {
     let highestCount = 0;
     const output = comments.reduce((accumulator, data) => {
       const count = data.metadata.likes.count;
-      if (data.metadata.likes.count > highestCount) {
+      const isHighestCount = getLatestMostLikedComment
+        ? data.metadata.likes.count >= highestCount
+        : data.metadata.likes.count > highestCount;
+      if (isHighestCount) {
         highestCount = count;
-        accumulator = { ...data.body, ...data.metadata };
+        accumulator = { ...data.body, ...data.metadata, ...data._links };
       }
       return accumulator;
     }, []);
@@ -41,6 +48,14 @@ const App = () => {
       return false;
     }
     return output;
+  };
+
+  const getOpenCommentURL = (url, webui) => {
+    var pathArray = url.split("/");
+    var protocol = pathArray[0];
+    var host = pathArray[2];
+    var url = protocol + "//" + host + "/wiki" + webui;
+    return url;
   };
 
   const renderText = ({ text, marks }) => {
@@ -68,6 +83,18 @@ const App = () => {
           <Heading>Most liked comment</Heading>
           {/* <Fragment>{mostLikedComment?.}</Fragment> */}
           {renderMostLikedComment(mostLikedComment)}
+          <Text>
+            <Link
+              openNewTab
+              appearance="button"
+              href={getOpenCommentURL(
+                mostLikedComment.self,
+                mostLikedComment.webui
+              )}
+            >
+              Open comment
+            </Link>
+          </Text>
         </Fragment>
       ) : (
         <Text>Please leave a comment on any questions or useful tips!</Text>
