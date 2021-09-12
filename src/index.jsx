@@ -86,7 +86,7 @@ const App = () => {
       {mostLikedComment ? (
         <Fragment>
           <Heading>
-            Most liked comment{" "}
+            Most helpful comment{" "}
             {<Badge appearance="added" text={mostLikedComment?.likes?.count} />}
           </Heading>
           {renderMostLikedComment(mostLikedComment)}
@@ -108,7 +108,7 @@ const App = () => {
           </Text>
         </Fragment>
       ) : (
-        <Text>Please leave a comment on any questions or useful tips!</Text>
+        <Text>Please leave a comment!</Text>
       )}
     </Fragment>
   );
