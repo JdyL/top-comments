@@ -53,8 +53,8 @@ const App = () => {
   };
 
   const renderMostLikedComment = (data) => {
-    data = JSON.parse(data.atlas_doc_format.value);
-    return data.content.map((obj) => {
+    const dataJSON = data && JSON.parse(data?.atlas_doc_format?.value);
+    return dataJSON?.content?.map((obj) => {
       const { text, marks, type } = obj?.content?.[0] || {};
       return text && renderText({ text, marks, type });
     });
