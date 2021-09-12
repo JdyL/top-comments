@@ -7,6 +7,7 @@ import ForgeUI, {
   useProductContext,
   useState,
   Heading,
+  Code,
 } from "@forge/ui";
 
 const fetchCommentsForContent = async (contentId) => {
@@ -43,10 +44,10 @@ const App = () => {
   };
   ``;
 
-  const renderText = ({ type, text, marks }) => {
+  const renderText = ({ text, marks }) => {
     const markTypes = marks?.map((obj) => obj.type);
     if (markTypes?.includes("code")) {
-      return <Text>This is code: {text}</Text>;
+      return <Code text={text} />;
     }
     return <Text>{text}</Text>;
   };
