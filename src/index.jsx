@@ -42,7 +42,6 @@ const App = () => {
     }
     return output;
   };
-  ``;
 
   const renderText = ({ text, marks }) => {
     const markTypes = marks?.map((obj) => obj.type);
@@ -64,9 +63,15 @@ const App = () => {
 
   return (
     <Fragment>
-      <Heading>Most liked comment</Heading>
-      {/* <Fragment>{mostLikedComment?.}</Fragment> */}
-      {renderMostLikedComment(mostLikedComment)}
+      {mostLikedComment ? (
+        <Fragment>
+          <Heading>Most liked comment</Heading>
+          {/* <Fragment>{mostLikedComment?.}</Fragment> */}
+          {renderMostLikedComment(mostLikedComment)}
+        </Fragment>
+      ) : (
+        <Text>Please leave a comment on any questions or useful tips!</Text>
+      )}
     </Fragment>
   );
 };
