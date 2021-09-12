@@ -9,13 +9,15 @@ import ForgeUI, {
   Heading,
   Code,
   Link,
+  User,
+  Badge,
 } from "@forge/ui";
 
 const fetchCommentsForContent = async (contentId) => {
   const res = await api
     .asUser()
     .requestConfluence(
-      route`/rest/api/content/${contentId}/child/comment?expand=body.atlas_doc_format,metadata.likes,metadata,container`
+      route`/rest/api/content/${contentId}/child/comment?expand=body.atlas_doc_format,metadata.likes,history,container`
     );
 
   const data = await res.json();
@@ -29,8 +31,6 @@ const App = () => {
   );
   const getLatestMostLikedComment = true;
 
-  // console.log(comments[0].container);
-
   const getMostLikedComment = () => {
     let highestCount = 0;
     const output = comments.reduce((accumulator, data) => {
@@ -40,7 +40,12 @@ const App = () => {
         : data.metadata.likes.count > highestCount;
       if (isHighestCount) {
         highestCount = count;
-        accumulator = { ...data.body, ...data.metadata, ...data._links };
+        accumulator = {
+          ...data.body,
+          ...data.metadata,
+          ...data._links,
+          history: data.history,
+        };
       }
       return accumulator;
     }, []);
@@ -80,9 +85,15 @@ const App = () => {
     <Fragment>
       {mostLikedComment ? (
         <Fragment>
-          <Heading>Most liked comment</Heading>
-          {/* <Fragment>{mostLikedComment?.}</Fragment> */}
+          <Heading>
+            Most liked comment{" "}
+            {<Badge appearance="added" text={mostLikedComment?.likes?.count} />}
+          </Heading>
           {renderMostLikedComment(mostLikedComment)}
+          <Text>
+            Contributor(s):{" "}
+            <User accountId={mostLikedComment.history.createdBy.accountId} />
+          </Text>
           <Text>
             <Link
               openNewTab
