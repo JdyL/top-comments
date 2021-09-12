@@ -75,7 +75,7 @@ const App = () => {
     const dataJSON = data && JSON.parse(data?.atlas_doc_format?.value);
     return dataJSON?.content?.map((obj) => {
       const { text, marks, type } = obj?.content?.[0] || {};
-      return text && renderText({ text, marks, type });
+      return renderText({ text: text || "", marks, type });
     });
   };
 
