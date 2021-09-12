@@ -41,14 +41,31 @@ const App = () => {
     }
     return output;
   };
+  ``;
+
+  const renderText = ({ type, text, marks }) => {
+    const markTypes = marks?.map((obj) => obj.type);
+    if (markTypes?.includes("code")) {
+      return <Text>This is code: {text}</Text>;
+    }
+    return <Text>{text}</Text>;
+  };
+
+  const renderMostLikedComment = (data) => {
+    data = JSON.parse(data.atlas_doc_format.value);
+    return data.content.map((obj) => {
+      const { text, marks, type } = obj?.content?.[0] || {};
+      return text && renderText({ text, marks, type });
+    });
+  };
 
   const mostLikedComment = getMostLikedComment();
-  console.log(mostLikedComment);
 
   return (
     <Fragment>
       <Heading>Most liked comment</Heading>
       {/* <Fragment>{mostLikedComment?.}</Fragment> */}
+      {renderMostLikedComment(mostLikedComment)}
     </Fragment>
   );
 };
