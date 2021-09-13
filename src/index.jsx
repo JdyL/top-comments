@@ -11,7 +11,11 @@ import ForgeUI, {
   Link,
   User,
   Badge,
+  useConfig,
 } from "@forge/ui";
+import { defaultConfig } from "./constants";
+export { config } from "./config";
+import { isNotEmptyObj } from "./utils";
 
 const fetchCommentsForContent = async (contentId) => {
   const routeFlags = [
@@ -34,6 +38,7 @@ const fetchCommentsForContent = async (contentId) => {
 };
 
 const App = () => {
+  const config = useConfig() || defaultConfig;
   const context = useProductContext();
   const [comments] = useState(
     async () => await fetchCommentsForContent(context.contentId)
@@ -88,11 +93,11 @@ const App = () => {
         setAccumulator,
       });
       return accumulator;
-    }, []);
+    }, {});
     if (highestCount === 0) {
       return false;
     }
-    return output;
+    return isNotEmptyObj(output) && output;
   };
 
   const getOpenCommentURL = (url, webui) => {
@@ -162,7 +167,7 @@ const App = () => {
       {mostLikedComment ? (
         <Fragment>
           <Heading>
-            Most helpful comment{" "}
+            {config.title}{" "}
             {<Badge appearance="added" text={mostLikedComment?.likes?.count} />}
           </Heading>
           {renderMostLikedComment(mostLikedComment)}
@@ -184,7 +189,7 @@ const App = () => {
           </Text>
         </Fragment>
       ) : (
-        <Text>Please leave a comment!</Text>
+        <Text>{config.message}</Text>
       )}
     </Fragment>
   );
