@@ -14,10 +14,19 @@ import ForgeUI, {
 } from "@forge/ui";
 
 const fetchCommentsForContent = async (contentId) => {
+  const routeFlags = [
+    "body.atlas_doc_format",
+    "metadata.likes",
+    "history",
+    "container",
+    "children.comment.body.atlas_doc_format",
+    "children.comment.metadata.likes",
+    "children.comment.history",
+  ].join(",");
   const res = await api
     .asUser()
     .requestConfluence(
-      route`/rest/api/content/${contentId}/child/comment?expand=body.atlas_doc_format,metadata.likes,history,container,children.comment.body.atlas_doc_format,children.comment.metadata.likes,children.comment.history`
+      route`/rest/api/content/${contentId}/child/comment?expand=${routeFlags}`
     );
 
   const data = await res.json();
