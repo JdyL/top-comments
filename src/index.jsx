@@ -71,29 +71,44 @@ const App = () => {
     return <Text>{text}</Text>;
   };
 
-  const formatText = ({ content }) => {
-    return (
-      <Text>
-        {content?.map((obj) => {
-          switch (obj.type) {
-            case "text":
-              return obj.text;
-            case "inlineCard":
-              return (
-                <Link href={obj.attrs.url}>
-                  {obj?.attrs?.__confluenceMetadata.contentTitle}
-                </Link>
-              );
-          }
-        })}
-      </Text>
+  const isGroup = {
+    listItem: true,
+  };
+
+  const formatText = ({ content, inline }) => {
+    console.log(content);
+    const output = content?.map((obj) => {
+      switch (obj.type) {
+        case "text":
+          return obj.text;
+        case "inlineCard":
+          return (
+            <Link href={obj.attrs.url}>
+              {obj?.attrs?.__confluenceMetadata.contentTitle}
+            </Link>
+          );
+        case "listItem":
+          return <Text>- {obj.content?.[0]?.content?.[0]?.text}</Text>;
+        case "mention":
+          return (
+            <Fragment>
+              @<User accountId={obj.attrs.id} />
+            </Fragment>
+          );
+      }
+    });
+    if (inline) return output;
+    return isGroup[content[0].type] ? (
+      <Fragment>{output}</Fragment>
+    ) : (
+      <Text>{output}</Text>
     );
   };
 
   const renderMostLikedComment = (data) => {
     const dataJSON = data && JSON.parse(data?.atlas_doc_format?.value);
     return dataJSON?.content?.map((obj) => {
-      if (obj?.content.length > 1) {
+      if (obj?.content?.length > 1) {
         return formatText({ content: obj?.content });
       }
       const { text, marks, type } = obj?.content?.[0] || {};
