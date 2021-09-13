@@ -31,39 +31,53 @@ const App = () => {
   );
   const getLatestMostLikedComment = true;
 
+  const extractCommentInfo = ({
+    content,
+    count,
+    highestCount,
+    setHighestCount,
+    setAccumulator,
+  }) => {
+    const isHighestCount = getLatestMostLikedComment
+      ? count >= highestCount
+      : count > highestCount;
+    if (isHighestCount) {
+      setHighestCount(count);
+      setAccumulator({
+        ...content.body,
+        ...content.metadata,
+        ...content._links,
+        history: content.history,
+      });
+    }
+  };
+
   const getMostLikedComment = () => {
     let highestCount = 0;
+    const setHighestCount = (count) => {
+      highestCount = count;
+    };
     const output = comments.reduce((accumulator, data) => {
+      const setAccumulator = (val) => {
+        accumulator = val;
+      };
       const replies = data?.children.comment.results;
       replies?.map((reply) => {
-        const count = reply.metadata.likes.count;
-        const isHighestCount = getLatestMostLikedComment
-          ? reply.metadata.likes.count >= highestCount
-          : reply.metadata.likes.count > highestCount;
-        if (isHighestCount) {
-          highestCount = count;
-          accumulator = {
-            ...reply.body,
-            ...reply.metadata,
-            ...reply._links,
-            history: reply.history,
-          };
-        }
+        extractCommentInfo({
+          count: reply.metadata.likes.count,
+          highestCount,
+          setHighestCount,
+          content: reply,
+          setAccumulator,
+        });
       });
-
-      const count = data.metadata.likes.count;
-      const isHighestCount = getLatestMostLikedComment
-        ? data.metadata.likes.count >= highestCount
-        : data.metadata.likes.count > highestCount;
-      if (isHighestCount) {
-        highestCount = count;
-        accumulator = {
-          ...data.body,
-          ...data.metadata,
-          ...data._links,
-          history: data.history,
-        };
-      }
+      extractCommentInfo({
+        count: data.metadata.likes.count,
+        highestCount,
+        setHighestCount,
+        content: data,
+        setAccumulator,
+      });
       return accumulator;
     }, []);
     if (highestCount === 0) {
