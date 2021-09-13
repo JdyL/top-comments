@@ -71,15 +71,13 @@ const App = () => {
 
   // const renderTable = ({}) => {};
 
-  const renderText = ({ content, inline }) => {
+  const renderText = ({ content, inline, type }) => {
     const output = content?.map((obj) => {
       const markTypes = obj?.marks?.map((obj) => obj.type);
       if (markTypes?.includes("code")) {
         return <Code text={obj.text} />;
       }
       switch (obj.type) {
-        case "text":
-          return obj?.text;
         case "inlineCard":
           return (
             <Link href={obj.attrs.url}>
@@ -104,13 +102,17 @@ const App = () => {
         //     return console.log(val.type, val.content[0].content[0]);
         //   });
         // }
-        default:
+        default: {
+          if (type === "heading")
+            return <Heading size="medium">{obj?.text}</Heading>;
           return obj?.text;
+        }
       }
     });
     if (inline) return output;
     return isGroup[content?.[0]?.type] ||
-      content?.[0]?.marks?.map((obj) => obj.type).includes("code") ? (
+      content?.[0]?.marks?.map((obj) => obj.type).includes("code") ||
+      type === "heading" ? (
       <Fragment>{output}</Fragment>
     ) : (
       <Text>{output}</Text>
@@ -119,8 +121,9 @@ const App = () => {
 
   const renderMostLikedComment = (data) => {
     const dataJSON = data && JSON.parse(data?.atlas_doc_format?.value);
+
     return dataJSON?.content?.map((obj) => {
-      return renderText({ content: obj?.content });
+      return renderText({ content: obj?.content, type: obj?.type });
     });
   };
 
