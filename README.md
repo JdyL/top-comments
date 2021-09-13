@@ -1,14 +1,20 @@
-# Forge Hello World
+# Top Comments
 
-This project contains a Forge app written in Javascript that displays `Hello World!` in a Confluence macro. 
+Top Comments is a plugin for Confluence which pins the most liked comment within the page.
+
+This project is built using Forge and written in Javascript as a Confluence Macro.
+
+
+
+## Forge setup
 
 See [developer.atlassian.com/platform/forge/](https://developer.atlassian.com/platform/forge) for documentation and tutorials explaining Forge.
 
-## Requirements
+### Requirements
 
 See [Set up Forge](https://developer.atlassian.com/platform/forge/set-up-forge/) for instructions to get set up.
 
-## Quick start
+### Quick start
 
 - Modify your app by editing the `src/index.jsx` file.
 
@@ -27,11 +33,11 @@ forge install
 forge tunnel
 ```
 
-### Notes
+#### Notes
 - Use the `forge deploy` command when you want to persist code changes.
 - Use the `forge install` command when you want to install the app on a new site.
 - Once the app is installed on a site, the site picks up the new app changes you deploy without needing to rerun the install command.
 
-## Support
+### Support
 
 See [Get help](https://developer.atlassian.com/platform/forge/get-help/) for how to get help and provide feedback.
