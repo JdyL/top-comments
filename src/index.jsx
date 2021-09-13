@@ -31,8 +31,6 @@ const App = () => {
   );
   const getLatestMostLikedComment = true;
 
-  // const tables = [];
-
   const getMostLikedComment = () => {
     let highestCount = 0;
     const output = comments.reduce((accumulator, data) => {
@@ -69,8 +67,6 @@ const App = () => {
     listItem: true,
   };
 
-  // const renderTable = ({}) => {};
-
   const renderText = ({ content, inline, type }) => {
     const output = content?.map((obj) => {
       const markTypes = obj?.marks?.map((obj) => obj.type);
@@ -94,14 +90,6 @@ const App = () => {
           );
         case "emoji":
           return obj.attrs?.text;
-        // case "tableRow": {
-        //   obj.content.map((val) => {
-        //     if (val.type === "tableHeader") {
-        //       return renderText(val.content[0].content)
-        //     }
-        //     return console.log(val.type, val.content[0].content[0]);
-        //   });
-        // }
         default: {
           if (type === "heading")
             return <Heading size="medium">{obj?.text}</Heading>;
@@ -163,13 +151,3 @@ const App = () => {
 };
 
 export const run = render(<Macro app={<App />} />);
-
-// editor: '',
-//     atlas_doc_format: '',
-//     view: '',
-//     export_view: '',
-//     styled_view: '',
-//     dynamic: '',
-//     storage: '',
-//     editor2: '',
-//     anonymous_export_view: ''
