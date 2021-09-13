@@ -95,6 +95,10 @@ const App = () => {
               @<User accountId={obj.attrs.id} />
             </Fragment>
           );
+        case "emoji":
+          return obj.attrs?.text;
+        default:
+          return obj.text;
       }
     });
     if (inline) return output;
