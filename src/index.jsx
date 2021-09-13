@@ -67,7 +67,7 @@ const App = () => {
   };
 
   const getMostLikedComment = () => {
-    let highestCount = 0;
+    let highestCount = config.minimumLikes;
     const setHighestCount = (count) => {
       highestCount = count;
     };
