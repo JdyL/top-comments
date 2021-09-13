@@ -6,7 +6,7 @@ Top Comments is a plugin for Confluence which pins the most liked comment within
 
 This project is built using Forge and written in Javascript as a Confluence Macro.
 
-This was for Codegeist 2021 hackathon.
+This is for Codegeist 2021 hackathon.
 
 ## What can it do
 
