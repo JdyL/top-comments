@@ -4,7 +4,13 @@ Top Comments is a plugin for Confluence which pins the most liked comment within
 
 This project is built using Forge and written in Javascript as a Confluence Macro.
 
+## What can it do
 
+![demo gif](https://github.com/JdyL/codegeist-2021/blob/master/demo.gif)
+
+After adding it to the confluence page and setting any custom configurations (e.g. default messages, minimum likes, etc), the comment with the highest amount of likes (and more than the minimum likes - default is 1) will be pinned on the original post.
+
+![confluence page with top comments plugin](https://github.com/JdyL/codegeist-2021/blob/master/screenshot.png)
 
 ## Forge setup
 
