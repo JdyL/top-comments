@@ -31,6 +31,8 @@ const App = () => {
   );
   const getLatestMostLikedComment = true;
 
+  // const tables = [];
+
   const getMostLikedComment = () => {
     let highestCount = 0;
     const output = comments.reduce((accumulator, data) => {
@@ -67,6 +69,8 @@ const App = () => {
     listItem: true,
   };
 
+  // const renderTable = ({}) => {};
+
   const renderText = ({ content, inline }) => {
     const output = content?.map((obj) => {
       const markTypes = obj?.marks?.map((obj) => obj.type);
@@ -92,6 +96,14 @@ const App = () => {
           );
         case "emoji":
           return obj.attrs?.text;
+        // case "tableRow": {
+        //   obj.content.map((val) => {
+        //     if (val.type === "tableHeader") {
+        //       return renderText(val.content[0].content)
+        //     }
+        //     return console.log(val.type, val.content[0].content[0]);
+        //   });
+        // }
         default:
           return obj?.text;
       }
