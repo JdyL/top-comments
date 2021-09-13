@@ -63,7 +63,7 @@ const App = () => {
     return url;
   };
 
-  const renderText = ({ text, marks }) => {
+  const renderText = ({ text, marks, type }) => {
     const markTypes = marks?.map((obj) => obj.type);
     if (markTypes?.includes("code")) {
       return <Code text={text} />;
@@ -71,9 +71,31 @@ const App = () => {
     return <Text>{text}</Text>;
   };
 
+  const formatText = ({ content }) => {
+    return (
+      <Text>
+        {content?.map((obj) => {
+          switch (obj.type) {
+            case "text":
+              return obj.text;
+            case "inlineCard":
+              return (
+                <Link href={obj.attrs.url}>
+                  {obj?.attrs?.__confluenceMetadata.contentTitle}
+                </Link>
+              );
+          }
+        })}
+      </Text>
+    );
+  };
+
   const renderMostLikedComment = (data) => {
     const dataJSON = data && JSON.parse(data?.atlas_doc_format?.value);
     return dataJSON?.content?.map((obj) => {
+      if (obj?.content.length > 1) {
+        return formatText({ content: obj?.content });
+      }
       const { text, marks, type } = obj?.content?.[0] || {};
       return renderText({ text: text || "", marks, type });
     });
