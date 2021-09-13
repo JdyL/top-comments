@@ -1,8 +1,8 @@
 modules:
   macro:
-    - key: top-comments-hello-world
+    - key: top-comments
       function: main
-      title: Top Comments Tool
+      title: Top Comments
       description: Pins the comment with the most likes
       config:
         function: config-function-key
