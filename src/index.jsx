@@ -17,7 +17,7 @@ const fetchCommentsForContent = async (contentId) => {
   const res = await api
     .asUser()
     .requestConfluence(
-      route`/rest/api/content/${contentId}/child/comment?expand=body.atlas_doc_format,metadata.likes,history,container`
+      route`/rest/api/content/${contentId}/child/comment?expand=body.atlas_doc_format,metadata.likes,history,container,children.comment.body.atlas_doc_format,children.comment.metadata.likes,children.comment.history`
     );
 
   const data = await res.json();
@@ -34,6 +34,23 @@ const App = () => {
   const getMostLikedComment = () => {
     let highestCount = 0;
     const output = comments.reduce((accumulator, data) => {
+      const replies = data?.children.comment.results;
+      replies?.map((reply) => {
+        const count = reply.metadata.likes.count;
+        const isHighestCount = getLatestMostLikedComment
+          ? reply.metadata.likes.count >= highestCount
+          : reply.metadata.likes.count > highestCount;
+        if (isHighestCount) {
+          highestCount = count;
+          accumulator = {
+            ...reply.body,
+            ...reply.metadata,
+            ...reply._links,
+            history: reply.history,
+          };
+        }
+      });
+
       const count = data.metadata.likes.count;
       const isHighestCount = getLatestMostLikedComment
         ? data.metadata.likes.count >= highestCount
