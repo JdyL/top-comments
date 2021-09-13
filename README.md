@@ -1,8 +1,12 @@
 # Top Comments
-
+<p align="center">
+ <img src="https://github.com/JdyL/codegeist-2021/blob/master/logo.svg" width="200" height="200" alt="picture of crown with purple background">
+</p>
 Top Comments is a plugin for Confluence which pins the most liked comment within the page.
 
 This project is built using Forge and written in Javascript as a Confluence Macro.
+
+This was for Codegeist 2021 hackathon.
 
 ## What can it do
 
