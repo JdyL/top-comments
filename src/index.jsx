@@ -63,24 +63,19 @@ const App = () => {
     return url;
   };
 
-  const renderText = ({ text, marks, type }) => {
-    const markTypes = marks?.map((obj) => obj.type);
-    if (markTypes?.includes("code")) {
-      return <Code text={text} />;
-    }
-    return <Text>{text}</Text>;
-  };
-
   const isGroup = {
     listItem: true,
   };
 
-  const formatText = ({ content, inline }) => {
-    console.log(content);
+  const renderText = ({ content, inline }) => {
     const output = content?.map((obj) => {
+      const markTypes = obj?.marks?.map((obj) => obj.type);
+      if (markTypes?.includes("code")) {
+        return <Code text={obj.text} />;
+      }
       switch (obj.type) {
         case "text":
-          return obj.text;
+          return obj?.text;
         case "inlineCard":
           return (
             <Link href={obj.attrs.url}>
@@ -98,11 +93,12 @@ const App = () => {
         case "emoji":
           return obj.attrs?.text;
         default:
-          return obj.text;
+          return obj?.text;
       }
     });
     if (inline) return output;
-    return isGroup[content[0].type] ? (
+    return isGroup[content?.[0]?.type] ||
+      content?.[0]?.marks?.map((obj) => obj.type).includes("code") ? (
       <Fragment>{output}</Fragment>
     ) : (
       <Text>{output}</Text>
@@ -112,11 +108,7 @@ const App = () => {
   const renderMostLikedComment = (data) => {
     const dataJSON = data && JSON.parse(data?.atlas_doc_format?.value);
     return dataJSON?.content?.map((obj) => {
-      if (obj?.content?.length > 1) {
-        return formatText({ content: obj?.content });
-      }
-      const { text, marks, type } = obj?.content?.[0] || {};
-      return renderText({ text: text || "", marks, type });
+      return renderText({ content: obj?.content });
     });
   };
 
